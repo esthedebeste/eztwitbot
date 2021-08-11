@@ -139,17 +139,17 @@ new App({
 
     // Check body validity
     for (const key in body) {
+      if (!/^\w+$/.test(key))
+        return res
+          .status(400)
+          .send(
+            `Invalid key ${key}. Allowed characters: a-z, A-Z, 0-9, underscore (_)`
+          );
       if (!Array.isArray(body[key]))
         return res.status(400).send("Invalid Grammar.");
       for (const value of body[key])
         if (typeof value !== "string")
           return res.status(400).send("Invalid Grammar.");
-        else if (!/\w+/.test(value))
-          return res
-            .status(400)
-            .send(
-              `Invalid key ${value}. Allowed characters: a-z, A-Z, 0-9, underscore (_)`
-            );
         else if (value.length > 280)
           return res
             .status(400)
