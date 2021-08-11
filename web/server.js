@@ -41,13 +41,14 @@ new App({
     twitter
       .generateAuthLink(`http${s}://${host}/finishauth`, {
         authAccessType: "write",
+        linkMode: "authorize",
       })
       .then(
         result => {
           if (result.oauth_callback_confirmed !== "true") res.sendStatus(500);
           req.session.oauthToken = result.oauth_token;
           req.session.oauthTokenSecret = result.oauth_token_secret;
-          res.redirect(result.url);
+          res.redirect(result.url + "&force_login=true");
         },
         err => {
           console.error(err);
@@ -57,7 +58,7 @@ new App({
   })
   .get("/finishauth", (req, res) => {
     if (req.session.oauthToken == null || req.session.oauthTokenSecret == null)
-      res.sendStatus(400);
+      return res.sendStatus(400);
     login(
       req.session.oauthToken,
       req.session.oauthTokenSecret,
