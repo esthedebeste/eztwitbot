@@ -2,6 +2,7 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { db } from "../web/db.js";
+import { generate } from "./generator.js";
 import { newtwt } from "./twitter.js";
 import { maindir } from "./utils.js";
 const prevDataLocation = join(maindir, "tweeting", "lastquery.json");
@@ -19,25 +20,26 @@ db.client
   .query(`SELECT * FROM bots WHERE grammar IS NOT NULL and updated_on > $1;`, [
     new Date(data.timestamp),
   ])
-  .then(async function ({ rows: bots }) {
+  .then(async res => {
+    const { rows: bots } = res;
     data.bots = data.bots.concat(bots);
-    for (const { token, secret, grammar } of data.bots) {
+    for (const { id, token, secret, grammar } of data.bots) {
       const bot = newtwt(token, secret);
       const text = generate(grammar.main, grammar);
+      console.log(
+        `Tweeting ${text} from https://twitter.com/intent/user?user_id=${id}`
+      );
       try {
         await bot.v1.tweet(text);
-        console.log(
-          `Tweeting ${text} from https://twitter.com/intent/user?user_id=${bot.id}`
-        );
       } catch (e) {
         console.error(e);
       }
     }
+    // Use the database's now value
+    const now = (await db.client.query(`SELECT NOW();`)).rows[0].now;
+    data.timestamp = now;
+    writeFileSync(prevDataLocation, JSON.stringify(data), {
+      encoding: "utf8",
+    });
+    db.close();
   });
-// Use the database's now value
-const now = (await db.client.query(`SELECT NOW();`)).rows[0].now;
-data.timestamp = now;
-writeFileSync(prevDataLocation, JSON.stringify(data), {
-  encoding: "utf8",
-});
-db.close();

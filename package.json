@@ -5,7 +5,8 @@
   "main": "./web/server.js",
   "type": "module",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "tweet": "node ./tweeting/tweet.js"
   },
   "repository": "github:tbhmens/eztwitbot",
   "author": "tbhmens",
