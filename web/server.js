@@ -115,12 +115,18 @@ new App({
   .get("/api/grammar/:botid", (req, res) => {
     const botid = req.params.botid;
     if (botid == null) res.status(400).send("Bot ID Missing");
-    else if (!/^[0-9]$/.test(botid)) res.status(400).send("Invalid ID");
-    else if (!db.hasBot(botid))
-      res
-        .status(404)
-        .send("This twitter account isn't registered in EZTwitBot.");
-    res.send(JSON.stringify(db.getBot(botid).grammar));
+    else if (!/^[0-9]+$/.test(botid)) res.status(400).send("Invalid ID");
+    db.getGrammar(botid).then(
+      grammar => res.type("json").send(grammar),
+      err => {
+        if (err === 404)
+          return res
+            .status(404)
+            .send("This twitter account isn't registered in EZTwitBot.");
+        res.sendStatus(500);
+        console.error(err);
+      }
+    );
   })
   .put("/api/grammar/:botid", async (req, res) => {
     const botid = req.params.botid;
