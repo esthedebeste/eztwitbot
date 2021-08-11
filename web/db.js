@@ -43,6 +43,6 @@ class Database {
     this.client.end();
   }
 }
-process.on("exit", () => db.close());
 const db = new Database(process.env.DATABASE_URL.trim());
+process.on("exit", () => db.close());
 export { stringify, parse, db };
