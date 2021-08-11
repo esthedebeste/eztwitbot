@@ -22,6 +22,12 @@ const generateRandomString = (len, chars = "!@#$%^&*") => {
     result += chars[Math.floor(Math.random() * chars.length)];
   return result;
 };
+const removeDuplicates = bots => {
+  let currentBots = {};
+  for (const bot of bots) currentBots[bot.id] = bot;
+  return Object.values(currentBots);
+};
+
 db.client
   .query(
     `SELECT * FROM bots WHERE grammar IS NOT NULL and token IS NOT NULL and secret IS NOT NULL and updated_on > '${new Date(
@@ -31,6 +37,7 @@ db.client
   .then(async res => {
     const { rows: bots } = res;
     data.bots = data.bots.concat(bots);
+    data.bots = removeDuplicates(data.bots);
     for (const { id, token, secret, grammar } of data.bots) {
       const bot = newtwt(token, secret);
       let text = generate(grammar.main, grammar);
