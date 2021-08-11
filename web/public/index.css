@@ -1,0 +1,103 @@
+:root {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  background-color: #111;
+  color: #eee;
+}
+.center {
+  text-align: center;
+}
+
+fieldset {
+  display: flex;
+  padding: 0.1em;
+  margin-bottom: 0.5em;
+}
+
+fieldset > label.optslabel {
+  flex-grow: 1;
+  max-width: 100ch;
+}
+
+label {
+  padding: 0.4rem;
+}
+
+input,
+textarea {
+  font-family: Roboto, sans-serif;
+  font-size: 1rem;
+  background-color: #000;
+  color: #fff;
+  border: 0.3em solid #555;
+  width: 15ch;
+  margin: 0;
+  resize: vertical;
+}
+
+samp,
+code {
+  font-family: "Fira Code", "Cascadia Code", Menlo, Monaco, Consolas,
+    "Courier New", Courier, monospace;
+  font-weight: 200;
+  font-size: 1rem;
+}
+code {
+  display: block;
+}
+mark {
+  background-color: inherit;
+  color: #ff0;
+  font-weight: 500;
+}
+
+input:disabled {
+  filter: contrast(50%);
+}
+
+span.options {
+  display: flex;
+  flex-direction: column;
+}
+button {
+  font-size: larger;
+  color: #000;
+  padding: 0.3em;
+  background-color: #0f0;
+  border-color: #0f0;
+  border-radius: 0.7em;
+}
+span#saveresult {
+  font-weight: bold;
+  margin-left: 1ch;
+}
+textarea.option {
+  margin-top: 0.2rem;
+  width: 100%;
+}
+button.addoption,
+button.removeoption {
+  height: 2em;
+  width: 2em;
+  align-self: flex-end;
+  margin-right: 1ch;
+}
+button.removeoption {
+  background-color: #f00;
+  border-color: #f00;
+}
+
+div.example {
+  filter: contrast(75%);
+}
+div.example::after {
+  position: relative;
+  top: 15%;
+  left: 10%;
+  font-size: 10em;
+  content: "EXAMPLE";
+  color: #ff03;
+  transform: rotate(-5deg);
+  display: block;
+  position: absolute;
+}

@@ -1,0 +1,13 @@
+html{
+    head{
+        script(src=index.js)
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto")
+        link(rel=stylesheet href=index.css)
+    }
+    body.center{
+        h1[EZTwitBot]
+        p[EZTwitBot is a tool to easily create your own twitter bots! Credits to ]{ a(href=https://cheapbotsdonequick.com/)[CBDQ] }[ for the original idea!]
+        p[You can log in with the button below, and then you can create your own "grammars" used to generate tweets!]
+        a(href=/redirecttwt){ img.signin(src=signinwithtwitter.png) }
+    }
+}
