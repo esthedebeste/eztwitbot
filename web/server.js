@@ -117,7 +117,14 @@ new App({
     if (botid == null) res.status(400).send("Bot ID Missing");
     else if (!/^[0-9]+$/.test(botid)) res.status(400).send("Invalid ID");
     db.getGrammar(botid).then(
-      grammar => res.type("json").send(grammar),
+      grammar =>
+        res
+          .type("json")
+          .send(
+            req.query.pretty
+              ? JSON.stringify(grammar, null, 2)
+              : JSON.stringify(grammar)
+          ),
       err => {
         if (err === 404)
           return res
