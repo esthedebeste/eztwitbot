@@ -7,7 +7,7 @@ import { ironSession } from "../next-iron-session-rewrite.js";
 import { partRegex } from "../tweeting/generator.js";
 import { login, twitter } from "../tweeting/twitter.js";
 import { db } from "./db.js";
-const port = Number(process.env.PORT ?? 8080);
+const port = process.env.PORT ?? 8080;
 const maindir = join(dirname(fileURLToPath(import.meta.url)));
 /** Render options */
 const ro = {
@@ -37,14 +37,13 @@ new App({
   .get("/redirecttwt", (req, res) => {
     if (req.headers.host == null) return res.sendStatus(400);
     const host = req.headers.host;
-    const s = req.connection.encrypted ? "s" : "";
+    const s = host === "localhost" ? "" : "s";
     twitter
       .generateAuthLink(`http${s}://${host}/finishauth`, {
         authAccessType: "write",
       })
       .then(
         result => {
-          console.log(result);
           if (result.oauth_callback_confirmed !== "true") res.sendStatus(500);
           req.session.oauthToken = result.oauth_token;
           req.session.oauthTokenSecret = result.oauth_token_secret;
@@ -59,7 +58,6 @@ new App({
   .get("/finishauth", (req, res) => {
     if (req.session.oauthToken == null || req.session.oauthTokenSecret == null)
       res.sendStatus(400);
-    console.log(req.params, req.query);
     login(
       req.session.oauthToken,
       req.session.oauthTokenSecret,
@@ -92,7 +90,6 @@ new App({
   })
   .get("/editor", (req, res) => {
     const botid = req.session.botid;
-    console.log(botid);
     if (botid == null) return res.redirect("/redirecttwt");
     else if (!/^[0-9]+$/.test(botid)) return res.status(400).send("Invalid ID");
     db.getGrammar(botid).then(

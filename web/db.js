@@ -3,11 +3,11 @@ const { Client } = pg;
 const stringify = JSON.stringify;
 const parse = JSON.parse;
 const addBotQuery =
-  "INSERT INTO bots (id, token, secret, updated_on) VALUES ($1, $2, $3, now()) ON CONFLICT DO UPDATE;";
-const hasBotQuery = "SELECT id FROM bots WHERE id = $1;";
-const getGrammarQuery = "SELECT (grammar) FROM bots WHERE id = $1;";
+  "INSERT INTO bots (id, token, secret, updated_on) VALUES ($1, $2, $3, now()) ON CONFLICT (id) DO UPDATE SET token = $2, secret = $3, updated_on = now();";
+const hasBotQuery = "SELECT id FROM bots WHERE id = $1";
+const getGrammarQuery = "SELECT (grammar) FROM bots WHERE id = $1";
 const updateGrammarQuery =
-  "UPDATE bots SET grammar = $2, updated_on = now() WHERE id = $1;";
+  "UPDATE bots SET grammar = $2, updated_on = now() WHERE id = $1";
 class Database {
   /** @type {pg.Client} */
   client;
