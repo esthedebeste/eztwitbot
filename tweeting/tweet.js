@@ -16,7 +16,7 @@ const data = existsSync(prevDataLocation)
       timestamp: 0,
       bots: [],
     };
-const generateRandomString = (len, chars = "!@#$%^&*") => {
+const generateRandomString = (len, chars = "!$%^&*=-_+<>~") => {
   let result = "";
   for (var i = 0; i < len; i++)
     result += chars[Math.floor(Math.random() * chars.length)];
@@ -28,8 +28,11 @@ const removeDuplicates = bots => {
   return Object.values(currentBots);
 };
 
+const containserr = (array, errid) => array.find(value => value.code === errid);
+
 db.client
   .query(
+    //                        There must be grammar   There must be authentication data            Must be updated later than the last query
     `SELECT * FROM bots WHERE grammar IS NOT NULL and token IS NOT NULL and secret IS NOT NULL and updated_on > '${new Date(
       data.timestamp
     ).toJSON()}';`
@@ -40,9 +43,11 @@ db.client
     data.bots = removeDuplicates(data.bots);
     for (const { id, token, secret, grammar } of data.bots) {
       const bot = newtwt(token, secret);
-      let text = generate(grammar.main, grammar);
+      let orig = generate(grammar.main, grammar);
+      let text = orig;
       let tries = 0;
-      while (tries <= 5) {
+      let totalerrs = [];
+      while (true) {
         try {
           const tweet = await bot.v1.tweet(text);
           console.log(
@@ -50,28 +55,35 @@ db.client
           );
           break;
         } catch (e) {
-          if (e.data.errors[0].code === 187) {
-            // Duplicate Tweet
-            tries++;
-            text += `\n\n(${generateRandomString(tries)})`;
-          } else if (e.data.errors[0].code === 89) {
-            // Unauthenticated
-            await db.client.query(
-              `UPDATE bots SET token = null, secret = null WHERE id = $1`,
-              [id]
-            );
-            console.log(`Removed auth data from ${id}`);
+          if (tries > 5) {
+            console.error(`Too many tries for ${id}\n`, totalerrs);
             break;
+          }
+          if (e?.data?.errors?.length) {
+            const errs = e.data.errors;
+            totalerrs = totalerrs.concat(errs);
+            if (containserr(errs, 89)) {
+              // Unauthenticated
+              await db.client.query(
+                `UPDATE bots SET token = null, secret = null WHERE id = $1`,
+                [id]
+              );
+              console.log(`Removed auth data from ${id}`);
+              break;
+            } else if (containserr(errs, 187))
+              // Duplicate Tweet
+              text = `${orig} (${generateRandomString(tries * 2)})`;
+            if (containserr(errs, 186))
+              // Tweet Too Long
+              text = orig = generate(grammar.main, grammar);
+            else console.error(errs);
+            tries++;
           } else {
             console.error(e);
             break;
           }
         }
       }
-      if (tries === 6)
-        console.error(
-          `Too many duplicates from https://twitter.com/intent/user?user_id=${id}`
-        );
     }
     // Use the database's now value
     const now = (await db.client.query(`SELECT NOW();`)).rows[0].now;
