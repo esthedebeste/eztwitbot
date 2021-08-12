@@ -1,9 +1,11 @@
+const partRegex = /<(\w+)>/g;
+const keyRegex = /^\w+$/g;
 const random = array =>
   Array.isArray(array)
     ? array[Math.floor(Math.random() * array.length)]
     : array;
 const generate = (startPoint, grammar) =>
-  random(startPoint).replace(/<(\w+)>/g, (_, word) =>
+  random(startPoint).replace(partRegex, (_, word) =>
     generate(random(grammar[word]), grammar)
   );
-export { generate };
+export { generate, partRegex, keyRegex };

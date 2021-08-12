@@ -4,7 +4,7 @@ import { __express } from "poggies";
 import sirv from "sirv";
 import { fileURLToPath } from "url";
 import { ironSession } from "../next-iron-session-rewrite.js";
-import { partRegex } from "../tweeting/generator.js";
+import { keyRegex, partRegex } from "../tweeting/generator.js";
 import { login, twitter } from "../tweeting/twitter.js";
 import { db } from "./db.js";
 const port = process.env.PORT ?? 8080;
@@ -152,7 +152,7 @@ new App({
 
     // Check body validity
     for (const key in body) {
-      if (!/^\w+$/.test(key))
+      if (!keyRegex.test(key))
         return res
           .status(400)
           .send(
