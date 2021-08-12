@@ -66,6 +66,7 @@ button {
   background-color: #0f0;
   border-color: #0f0;
   border-radius: 0.7em;
+  margin-right: 1ch;
 }
 span#saveresult {
   font-weight: bold;
@@ -80,7 +81,6 @@ button.removeoption {
   height: 2em;
   width: 2em;
   align-self: flex-end;
-  margin-right: 1ch;
 }
 button.removeoption {
   background-color: #f00;
@@ -91,13 +91,13 @@ div.example {
   filter: contrast(75%);
 }
 div.example::after {
-  position: relative;
-  top: 15%;
-  left: 10%;
-  font-size: 10em;
-  content: "EXAMPLE";
-  color: #ff03;
-  transform: rotate(-5deg);
-  display: block;
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 50%;
+  transform: translateX(-50%) translateY(-50%) rotate(-5deg);
+  content: "EXAMPLE";
+  font-size: 6em;
+  color: #ff03;
+  display: block;
 }

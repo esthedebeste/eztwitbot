@@ -9,5 +9,10 @@ html{
         p[EZTwitBot is a tool to easily create your own twitter bots! Credits to ]{ a(href=https://cheapbotsdonequick.com/)[CBDQ] }[ for the original idea!]
         p[You can log in with the button below, and then you can create your own "grammars" used to generate tweets!]
         a(href=/redirecttwt){ img.signin(src=signinwithtwitter.png) }
+        br br br
+        p[Example configuration:]
+        div.example(style="padding-left: 20%; padding-right: 20%;" aria-hidden=true data-main="When the <thing> is <description>!" data-thing="impostor,crewmate" data-description="sus,sussy")
+
+        script(type=module src=example.js)
     }
 }

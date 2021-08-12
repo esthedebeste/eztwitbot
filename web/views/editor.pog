@@ -5,27 +5,17 @@ html{
 
     }
     body(data-botid=>botid data-grammar=>grammar){
-        template#option {
-            textarea.option(rows=1 placeholder=Option)
-        }
-        template#part {
-            fieldset.part {
-                label[Part name: ]{
-                    br
-                    input.partname(type=text placeholder="Part Name")
-                }
-                label.optslabel[Options: ]{
-                    span.options
-                }
-                button.addoption(type=button title="Add another option")[+]
-                button.removeoption(type=button title="Remove last option")[-]
-            }
-        }
         form#editor
         button#addpart(type=button)[Add another part]
         br br
         button#savegrammar(type=button)[Save Grammar]
         span#saveresult
+        br br
+        button#preview(type=button)[View Preview] br
+        output#previewresult(name=preview form=editor)
+
+        script(type=module src=editor.js)
+
         h1[Explanation]
         p[The generation starts at the ]{samp[main]}[ part, and from there you can reference other parts, using ]{samp[<part>]}[. For example: ]
         code[When the <thing> is <description>!]
@@ -38,7 +28,8 @@ html{
         code[When the ]{mark[crewmate]}[ is ]{mark[sus]}[!]
         code[When the ]{mark[crewmate]}[ is ]{mark[sussy]}[!]
         p[The configuration for this would look like:]
-        div.example(aria-hidden=true data-main="When the <thing> is <description>!" data-thing="impostor,crewmate" data-description="sus,sussy")
+        div.example(style="padding-left: 10%; padding-right: 10%;" aria-hidden=true data-main="When the <thing> is <description>!" data-thing="impostor,crewmate" data-description="sus,sussy")
 
-    }{ script(src=generator.js) script(src=editor.js) }
+        script(type=module src=example.js)
+    }
 }
