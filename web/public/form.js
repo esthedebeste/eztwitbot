@@ -74,7 +74,6 @@ function addToForm(form, key = "", options = [""]) {
     .querySelector("button.addoption")
     .addEventListener("click", function (event) {
       const newOption = optionTemplate.cloneNode(true);
-      newOption.value = "";
       optionsEl.appendChild(newOption);
       this.parentElement
         .querySelector("button.removeoption")
