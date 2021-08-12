@@ -1,5 +1,5 @@
 const partRegex = /<(\w+)>/g;
-const keyRegex = /^\w+$/g;
+const keyRegex = /^\w+$/;
 const random = array =>
   Array.isArray(array)
     ? array[Math.floor(Math.random() * array.length)]
