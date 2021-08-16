@@ -33,7 +33,6 @@ new App({
   .use(sirv(join(maindir, "public")))
   .engine("pog", __express)
   .get("/", (_, res) => res.render("index", {}, ro))
-  .get("/huh", (_, res) => res.send("uh"))
   .get("/redirecttwt", (req, res) => {
     if (req.headers.host == null) return res.sendStatus(400);
     const host = req.headers.host;
@@ -149,6 +148,7 @@ new App({
     } catch (e) {
       return res.status(400).send("Invalid JSON");
     }
+    if (typeof body !== "object") return res.status(400).send("Invalid JSON");
 
     // Check body validity
     for (const key in body) {
