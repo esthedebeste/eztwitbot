@@ -1,10 +1,5 @@
 class Modifier {
   /**
-   * @param {String} total
-   * @param {String} part
-   */
-  execute = (total, part) => total;
-  /**
    * @param {RegExp} regex
    * @param {(total: String, part: String)=>String} executor
    */

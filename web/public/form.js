@@ -1,14 +1,16 @@
-// fieldset.part {
-//     label[Part name: ]{
-//         br
-//         input.partname(type=text placeholder="Part Name")
-//     }
-//     label.optslabel[Options: ]{
-//         span.options
-//     }
-//     button.addoption(type=button title="Add another option")[+]
-//     button.removeoption(type=button title="Remove last option")[-]
-// }
+/*
+fieldset.part {
+  label[Part name: ]{
+    br
+    input.partname(type=text placeholder="Part Name")
+  }
+  label.optslabel[Options: ]{
+    span.options
+  }
+  button.addoption(type=button title="Add another option")[+]
+  button.removeoption(type=button title="Remove last option")[-]
+}
+*/
 const grammarTemplate = (() => {
   const ret = document.createElement("fieldset");
   ret.classList.add("part");
@@ -72,7 +74,7 @@ function addToForm(form, key = "", options = [""]) {
   const optionsEl = part.querySelector("span.options");
   part
     .querySelector("button.addoption")
-    .addEventListener("click", function (event) {
+    .addEventListener("click", function (_event) {
       const newOption = optionTemplate.cloneNode(true);
       optionsEl.appendChild(newOption);
       this.parentElement
@@ -81,9 +83,9 @@ function addToForm(form, key = "", options = [""]) {
     });
   part
     .querySelector("button.removeoption")
-    .addEventListener("click", function (event) {
+    .addEventListener("click", function (_event) {
       if (optionsEl.children.length > 1) {
-        if (optionsEl.children.length == 2)
+        if (optionsEl.children.length === 2)
           this.toggleAttribute("hidden", true);
         optionsEl.lastElementChild.remove();
       } else this.parentElement.remove();

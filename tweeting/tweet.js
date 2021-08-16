@@ -44,7 +44,7 @@ db.client
     const { rows: bots } = res;
     data.bots = removeDuplicates(data.bots.concat(bots));
     const removing = [];
-    data.bots.forEach(({ id, token, secret, grammar }, index) => {
+    data.bots.forEach(async ({ id, token, secret, grammar }, index) => {
       const bot = newtwt(token, secret);
       let orig = generate(grammar.main, grammar);
       let text = orig;
@@ -93,9 +93,7 @@ db.client
     const now = (await db.client.query(`SELECT NOW();`)).rows[0].now;
     data.timestamp = now;
     data.bots = data.bots.filter(({ id }) => !removing.includes(id));
-    writeFileSync(prevDataLocation, JSON.stringify(data), {
-      encoding: "utf8",
-    });
+    writeFileSync(prevDataLocation, JSON.stringify(data), { encoding: "utf8" });
   })
   .finally(() => {
     db.close();

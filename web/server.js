@@ -64,7 +64,7 @@ new App({
       req.session.oauthTokenSecret,
       req.query.oauth_verifier
     ).then(
-      async result => {
+      result => {
         db.addBot(result.userId, result.accessToken, result.accessSecret).then(
           () => {
             delete req.session.oauthToken;
@@ -180,12 +180,11 @@ new App({
           `Recursion (self-referencing keys) detected. ` +
           `(${trace.join(">")}>${key})`
         );
-      else
-        for (const part of body[key])
-          for (const result of part.matchAll(partRegex)) {
-            const checkResult = recursionCheck(result[1], trace.concat(key));
-            if (checkResult) return checkResult;
-          }
+      for (const part of body[key])
+        for (const result of part.matchAll(partRegex)) {
+          const checkResult = recursionCheck(result[1], trace.concat(key));
+          if (checkResult) return checkResult;
+        }
       return false;
     }
     const checkResult = recursionCheck();
