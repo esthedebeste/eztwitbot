@@ -6,6 +6,9 @@ import { db } from "../web/db.js";
 import { newtwt } from "./twitter.js";
 import { maindir } from "./utils.js";
 const prevDataLocation = join(maindir, "tweeting", "lastquery.json");
+/**
+ * @type {{timestamp: string, bots: Array<{id: string, token: string, secret: string, grammar: {[part: string]: Array<String>}}>}}
+ */
 const data = existsSync(prevDataLocation)
   ? JSON.parse(
       readFileSync(prevDataLocation, {
@@ -23,9 +26,9 @@ const generateRandomString = (len, chars = "!$%^&*=-_+<>~") => {
   return result;
 };
 const removeDuplicates = bots => {
-  let currentBots = {};
-  for (const bot of bots) currentBots[bot.id] = bot;
-  return Object.values(currentBots);
+  const currentBots = new Map();
+  for (const bot of bots) currentBots.set(bot.id, bot);
+  return Array.from(currentBots.values());
 };
 
 const containserr = (array, errid) => array.find(value => value.code === errid);
@@ -39,9 +42,9 @@ db.client
   )
   .then(async res => {
     const { rows: bots } = res;
-    data.bots = data.bots.concat(bots);
-    data.bots = removeDuplicates(data.bots);
-    for (const { id, token, secret, grammar } of data.bots) {
+    data.bots = removeDuplicates(data.bots.concat(bots));
+    const removing = [];
+    data.bots.forEach(({ id, token, secret, grammar }, index) => {
       const bot = newtwt(token, secret);
       let orig = generate(grammar.main, grammar);
       let text = orig;
@@ -68,7 +71,8 @@ db.client
                 `UPDATE bots SET token = null, secret = null WHERE id = $1`,
                 [id]
               );
-              console.log(`Removed auth data from ${id}`);
+              removing.push(id);
+              data.bots[index] === console.log(`Removed auth data from ${id}`);
               break;
             } else if (containserr(errs, 187))
               // Duplicate Tweet
@@ -84,10 +88,11 @@ db.client
           }
         }
       }
-    }
+    });
     // Use the database's now value
     const now = (await db.client.query(`SELECT NOW();`)).rows[0].now;
     data.timestamp = now;
+    data.bots = data.bots.filter(({ id }) => !removing.includes(id));
     writeFileSync(prevDataLocation, JSON.stringify(data), {
       encoding: "utf8",
     });

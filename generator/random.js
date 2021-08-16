@@ -9,10 +9,10 @@ const calculateParameters = range => {
   let mask = 1;
 
   while (range > 0) {
-    if (bitsNeeded % 8 === 0) bytesNeeded += 1;
-    bitsNeeded += 1;
+    if (bitsNeeded % 8 === 0) bytesNeeded++;
+    bitsNeeded++;
     mask = (mask << 1) | 1;
-    range = range >>> 1;
+    range >>>= 1;
   }
 
   return { bitsNeeded, bytesNeeded, mask };
@@ -29,7 +29,7 @@ const randomInclusive = (minimum, maximum) => {
     const randomBytes = rBytes(bytesNeeded);
     for (let i = 0; i < bytesNeeded; i++)
       randomValue |= randomBytes[i] << (8 * i);
-    randomValue = randomValue & mask;
+    randomValue &= mask;
 
     if (randomValue <= range) return minimum + randomValue;
     else randomValue = 0;
