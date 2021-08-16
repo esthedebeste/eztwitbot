@@ -17,6 +17,7 @@ class Modifier {
  * Modifier guidelines:
  * - Every modifier is a regex statement starting with ^ and ending with $
  * - Modifiers have no regex flags
+ * - Modifiers can't start with anything \w
  */
 export const modifiers = {
   slice: new Modifier(/^\[-?\d+,-?\d+\]$/, (total, part) => {

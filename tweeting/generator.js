@@ -1,4 +1,5 @@
 import randomInclusive from "./evenmorerandom.js";
+import { modifiers } from "./modifiers.js";
 const partRegex = new RegExp(
   `<((\\w+)((?:${Object.values(modifiers)
     .map(a => a.regex.source.slice(1, -1))
