@@ -3,7 +3,7 @@ import { choice } from "./random.js";
 const partRegex = new RegExp(
   `<((\\w+)((?:${Object.values(modifiers)
     .map(a => a.regex.source.slice(1, -1))
-    .join("|")})+))>`,
+    .join("|")})*))>`,
   "g"
 );
 const keyRegex = /^\w+$/;
