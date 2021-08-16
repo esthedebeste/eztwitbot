@@ -3,8 +3,8 @@ import { dirname, join } from "path";
 import { __express } from "poggies";
 import sirv from "sirv";
 import { fileURLToPath } from "url";
+import { keyRegex, partRegex } from "../generator/generator.js";
 import { ironSession } from "../next-iron-session-rewrite.js";
-import { keyRegex, partRegex } from "../tweeting/generator.js";
 import { login, twitter } from "../tweeting/twitter.js";
 import { db } from "./db.js";
 const port = process.env.PORT ?? 8080;
@@ -31,6 +31,7 @@ new App({
     })
   )
   .use(sirv(join(maindir, "public")))
+  .use(sirv(join(maindir, "..", "generator")))
   .engine("pog", __express)
   .get("/", (_, res) => res.render("index", {}, ro))
   .get("/redirecttwt", (req, res) => {
@@ -200,4 +201,5 @@ new App({
       }
     );
   })
+  .get("*", (_, res) => res.status(404).render("404", {}, ro))
   .listen(port, () => console.log(`Listening on port ${port}!`));

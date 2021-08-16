@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { generate } from "../generator/generator.js";
 import { db } from "../web/db.js";
-import { generate } from "./generator.js";
 import { newtwt } from "./twitter.js";
 import { maindir } from "./utils.js";
 const prevDataLocation = join(maindir, "tweeting", "lastquery.json");

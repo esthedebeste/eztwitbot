@@ -1,5 +1,5 @@
-import randomInclusive from "./evenmorerandom.js";
 import { modifiers } from "./modifiers.js";
+import { choice } from "./random.js";
 const partRegex = new RegExp(
   `<((\\w+)((?:${Object.values(modifiers)
     .map(a => a.regex.source.slice(1, -1))
@@ -7,8 +7,7 @@ const partRegex = new RegExp(
   "g"
 );
 const keyRegex = /^\w+$/;
-const random = array =>
-  Array.isArray(array) ? array[randomInclusive(0, array.length - 1)] : array;
+const random = array => (Array.isArray(array) ? choice(array) : array);
 
 const applyModifiers = (str, mods) => {
   if (typeof mods !== "string") return str;

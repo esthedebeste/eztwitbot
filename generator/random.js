@@ -1,4 +1,7 @@
-import { randomBytes as rBytes } from "crypto";
+let rBytes;
+if (typeof window === "undefined")
+  rBytes = (await import("crypto")).randomBytes;
+else rBytes = a => crypto.getRandomValues(new Uint8Array(a));
 
 const calculateParameters = range => {
   let bitsNeeded = 0;
@@ -33,4 +36,5 @@ const randomInclusive = (minimum, maximum) => {
   }
 };
 
-export default randomInclusive;
+const choice = array => array[randomInclusive(0, array.length - 1)];
+export { randomInclusive, choice };

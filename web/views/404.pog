@@ -1,0 +1,9 @@
+html{
+    head{
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto")
+        link(rel=stylesheet href=index.css)
+    }
+    body{
+        h1(style="color: red;")[404 - Not Found]
+    }[i forgor 💀]
+}
