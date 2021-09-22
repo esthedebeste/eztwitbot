@@ -1,7 +1,6 @@
-let rBytes;
-if (typeof window === "undefined")
-  rBytes = (await import("crypto")).randomBytes;
-else rBytes = a => crypto.getRandomValues(new Uint8Array(a));
+const rBytes = window
+  ? a => crypto.getRandomValues(new Uint8Array(a))
+  : (await import("crypto")).randomBytes;
 
 const calculateParameters = range => {
   let bitsNeeded = 0;
@@ -32,7 +31,7 @@ const randomInclusive = (minimum, maximum) => {
     randomValue &= mask;
 
     if (randomValue <= range) return minimum + randomValue;
-    else randomValue = 0;
+    randomValue = 0;
   }
 };
 

@@ -21,7 +21,7 @@ const data = existsSync(prevDataLocation)
     };
 const generateRandomString = (len, chars = "!$%^&*=-_+<>~") => {
   let result = "";
-  for (var i = 0; i < len; i++)
+  for (let i = 0; i < len; i++)
     result += chars[Math.floor(Math.random() * chars.length)];
   return result;
 };
@@ -65,14 +65,14 @@ db.client
           if (e?.data?.errors?.length) {
             const errs = e.data.errors;
             totalerrs = totalerrs.concat(errs);
-            if (containserr(errs, 89)) {
+            if (containserr(errs, 89) || containserr(errs, 220)) {
               // Unauthenticated
               await db.client.query(
                 `UPDATE bots SET token = null, secret = null WHERE id = $1`,
                 [id]
               );
               removing.push(id);
-              data.bots[index] === console.log(`Removed auth data from ${id}`);
+              console.log(`Removed auth data from ${id}`);
               break;
             } else if (containserr(errs, 187))
               // Duplicate Tweet
@@ -80,7 +80,6 @@ db.client
             if (containserr(errs, 186))
               // Tweet Too Long
               text = orig = generate(grammar.main, grammar);
-            else console.error(errs);
             tries++;
           } else {
             console.error(e);

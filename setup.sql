@@ -1,3 +1,5 @@
+-- Setup script for PostgreSQL database.
+
 CREATE TABLE IF NOT EXISTS bots (id TEXT NOT NULL PRIMARY KEY, grammar JSON, token TEXT, secret TEXT, updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);
 
 -- Make sure all columns exist

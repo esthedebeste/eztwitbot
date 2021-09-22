@@ -142,6 +142,7 @@ new App({
     else if (botid == null) res.status(400).send("Bot ID Missing");
     else if (sessId !== botid) res.status(403).send(`You aren't ${botid}.`);
     else if (!/^[0-9]+$/.test(botid)) res.status(400).send("Invalid ID");
+    /** @type {Record<string, string[]>} */
     let body = "";
     for await (const chunk of req) body += chunk;
     try {

@@ -8,7 +8,8 @@
   "extends": "eslint:recommended",
   "parserOptions": {
     "ecmaVersion": 12,
-    "sourceType": "module"
+    "sourceType": "module",
+    "requireConfigFile": false
   },
   "rules": {
     "accessor-pairs": "error",
@@ -40,8 +41,8 @@
     "new-cap": "error",
     "no-alert": "error",
     "no-array-constructor": "error",
-    "no-await-in-loop": "error",
-    "no-bitwise": "error",
+    "no-await-in-loop": "off",
+    "no-bitwise": "off",
     "no-caller": "error",
     "no-console": "off",
     "no-constructor-return": "error",
@@ -64,7 +65,7 @@
     "no-lonely-if": "error",
     "no-loop-func": "error",
     "no-loss-of-precision": "error",
-    "no-multi-assign": "error",
+    "no-multi-assign": "off",
     "no-multi-str": "error",
     "no-negated-condition": "error",
     "no-nested-ternary": "error",
@@ -74,7 +75,7 @@
     "no-new-wrappers": "error",
     "no-nonoctal-decimal-escape": "error",
     "no-octal-escape": "error",
-    "no-plusplus": "error",
+    "no-plusplus": "off",
     "no-promise-executor-return": "error",
     "no-proto": "error",
     "no-restricted-exports": "error",
@@ -121,11 +122,11 @@
     "prefer-named-capture-group": "off",
     "prefer-numeric-literals": "error",
     "prefer-object-spread": "error",
-    "prefer-promise-reject-errors": "error",
+    "prefer-promise-reject-errors": "off",
     "prefer-regex-literals": "error",
     "prefer-rest-params": "error",
     "prefer-spread": "error",
-    "require-atomic-updates": "error",
+    "require-atomic-updates": "off",
     "require-await": "error",
     "require-unicode-regexp": "off",
     "sort-keys": "off",
@@ -135,9 +136,6 @@
     "symbol-description": "error",
     "vars-on-top": "error",
     "yoda": "error",
-    // The following rules can be used in some cases. See the README for more
-    // information. (These are marked with `0` instead of `"off"` so that a
-    // script can distinguish them.)
     "curly": 0,
     "lines-around-comment": 0,
     "max-len": 0,
@@ -150,8 +148,6 @@
     "babel/quotes": 0,
     "vue/html-self-closing": 0,
     "vue/max-len": 0,
-
-    // The rest are rules that you never need to enable when using Prettier.
     "array-bracket-newline": "off",
     "array-bracket-spacing": "off",
     "array-element-newline": "off",
@@ -180,6 +176,7 @@
     "newline-per-chained-call": "off",
     "new-parens": "off",
     "no-arrow-condition": "off",
+    "no-constant-condition": "off",
     "no-comma-dangle": "off",
     "no-extra-parens": "off",
     "no-extra-semi": "off",

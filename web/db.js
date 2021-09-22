@@ -1,7 +1,5 @@
 import pg from "pg";
 const { Client } = pg;
-const stringify = JSON.stringify;
-const parse = JSON.parse;
 const addBotQuery =
   "INSERT INTO bots (id, token, secret, updated_on) VALUES ($1, $2, $3, now()) ON CONFLICT (id) DO UPDATE SET token = $2, secret = $3, updated_on = now();";
 const hasBotQuery = "SELECT id FROM bots WHERE id = $1";
@@ -29,12 +27,12 @@ class Database {
       .then(res => res.rows[0]);
   }
   getGrammar(botid) {
-    return new Promise((resolve, reject) =>
+    return new Promise((resolve, reject) => {
       this.client.query(getGrammarQuery, [botid]).then(
         res => (res.rows.length ? resolve(res.rows[0].grammar) : reject(404)),
         err => reject(err)
-      )
-    );
+      );
+    });
   }
   hasBot(botid) {
     return this.client.query(hasBotQuery, [botid]).then(res => res.rowCount);
@@ -45,4 +43,4 @@ class Database {
 }
 const db = new Database(process.env.DATABASE_URL.trim());
 process.on("exit", () => db.close());
-export { stringify, parse, db };
+export { db };
