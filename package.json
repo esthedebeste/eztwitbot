@@ -16,9 +16,8 @@
   },
   "homepage": "https://github.com/tbhmens/eztwitbot#readme",
   "dependencies": {
-    "@hapi/iron": "^6.0.0",
-    "@tinyhttp/app": "^2.0.4",
-    "cookie": "^0.4.1",
+    "coggers": "^1.5.0",
+    "coggers-session": "^1.2.1",
     "pg": "^8.7.1",
     "poggies": "^0.3.1",
     "sirv": "^1.0.14",

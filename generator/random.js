@@ -1,6 +1,12 @@
-const rBytes = window
-  ? a => crypto.getRandomValues(new Uint8Array(a))
-  : (await import("crypto")).randomBytes;
+// eslint-disable-next-line init-declarations
+let rBytes;
+try {
+  rBytes = window
+    ? a => crypto.getRandomValues(new Uint8Array(a))
+    : (await import("crypto")).randomBytes;
+} catch (error) {
+  rBytes = (await import("crypto")).randomBytes;
+}
 
 const calculateParameters = range => {
   let bitsNeeded = 0;
