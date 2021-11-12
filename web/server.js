@@ -115,8 +115,7 @@ const coggers = new Coggers(
     api: {
       grammar: {
         $$botid: {
-          async $get(req, res) {
-            const botid = req.params.botid;
+          async $get(req, res, { botid }) {
             if (botid == null) res.status(400).send("Bot ID Missing");
             else if (!/^[0-9]+$/.test(botid))
               res.status(400).send("Invalid ID");
@@ -136,8 +135,7 @@ const coggers = new Coggers(
               res.sendStatus(500);
             }
           },
-          async $put(req, res) {
-            const botid = req.params.botid;
+          async $put(req, res, { botid }) {
             const sessId = req.session.botid;
             if (sessId == null) res.status(403).send("Unauthenticated.");
             else if (botid == null) res.status(400).send("Bot ID Missing");
